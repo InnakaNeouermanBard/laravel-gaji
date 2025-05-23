@@ -104,8 +104,8 @@
                                         <th>NIK</th>
                                         <th>Nama</th>
                                         <th>Jenis Kelamin</th>
-                                        <th>Jabatan</th>
-                                        <th>Gaji Pokok</th>
+                                        <th>Gaji + Lembur</th>
+                                        <th>Bonus</th>
                                         <th>Potongan</th>
                                         <th>Total Gaji</th>
                                         <th>Status</th>
@@ -129,7 +129,8 @@
                                                     Perempuan
                                                 @endif
                                             </td>
-                                            <td>{{ $gaji->karyawan->jabatan->nama_jabatan }}</td>
+                                            {{-- <td>{{ $gaji->karyawan->jabatan->nama_jabatan }}</td> --}}
+                                            <td>@currency($gaji->total_bonus)</td>
                                             <td>@currency($gaji->gaji_pokok)</td>
                                             <td>@currency($gaji->potongan_gaji)</td>
                                             <td>@currency($gaji->total_gaji)</td>
@@ -138,6 +139,8 @@
                                                     <span class="badge badge-info">Pending</span>
                                                 @elseif ($gaji->status == 1)
                                                     <span class="badge badge-success">Acc</span>
+                                                @elseif ($gaji->status == 3)
+                                                    <span class="badge badge-success">Dibayar</span>
                                                 @else
                                                     <span class="badge badge-danger">Ditolak</span>
                                                 @endif
@@ -166,8 +169,50 @@
                                                                     </button>
                                                                 </form>
                                                             @endif
+                                                            @if ($gaji->status == 1)
+                                                                <div>
+                                                                    <p>Rekening : <br>{{ $gaji->karyawan->no_rekening }}
+                                                                        ({{ $gaji->karyawan->nama_bank }})
+                                                                    </p>
+                                                                    {{-- <p>Total Gaji: Rp
+                                                                        {{ number_format($gaji->total_gaji, 0, ',', '.') }}
+                                                                    </p> --}}
+                                                                    <!-- Tombol untuk bayar gaji -->
+                                                                    <!-- Form untuk Kirim Email -->
+
+
+                                                                    <!-- Form untuk Bayar -->
+                                                                    <form data-reload="true" id="main-form-delete"
+                                                                        action="{{ route('gaji.bayar', $gaji->id_gaji) }}"
+                                                                        method="POST" class="ms-1 acc-form d-inline">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <button class="btn btn-success"
+                                                                            type="submit">Bayar</button>
+                                                                    </form>
+                                                                </div>
+                                                            @endif
+                                                            @if ($gaji->status == 3)
+                                                                <form
+                                                                    action="{{ route('gaji.kirimEmail', $gaji->id_gaji) }}"
+                                                                    method="POST" class="d-inline">
+                                                                    @csrf
+                                                                    <button class="btn btn-primary" type="submit">Kirim
+                                                                        Email</button>
+                                                                </form>
+                                                                <form data-reload="true" id="main-form-delete"
+                                                                    action="{{ route('gaji.cancel', $gaji->id_gaji) }}"
+                                                                    method="POST" class="ms-1 acc-form">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <button class="tolak-text btn btn-sm btn-danger">
+                                                                        <i class="fa fa-times-circle"></i>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
                                                         </div>
                                                     @endif
+
                                                     @if (auth()->user()->level == 0)
                                                         <div class="d-flex">
                                                             <a href="#"
@@ -203,4 +248,28 @@
         <!-- /.row -->
     </section>
     <!-- /.content -->
+
+    {{-- <div class="modal fade" id="bayarModal" tabindex="-1" aria-labelledby="bayarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bayarModalLabel">Form Pembayaran Gaji</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('gaji.kirimEmail', $gaji->id_gaji) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                       
+                        <div class="mb-3">
+                            <label for="bukti_transfer" class="form-label">Bukti Transfer</label>
+                            <input type="file" class="form-control" id="bukti_transfer" name="bukti_transfer"
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kirim Email</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> --}}
 @endsection

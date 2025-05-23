@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('potongan_gaji');
             $table->integer('total_lembur');
             $table->integer('total_bonus');
-            $table->integer('status')->default(0)->comment('0=pending,1=diterima,2=ditolak');
+            $table->integer('status')->default(0)->comment('0=pending,1=diterima,2=ditolak,3=dibayar');
             $table->timestamps();
         });
     }

@@ -21,7 +21,7 @@ $is_edit = isset($data);
                             value="{{ isset($data->nama_jabatan) ? $data->nama_jabatan : '' }}" required>
                     </div>
                     <div class="form-group required">
-                        <label for="gaji_pokok">Gaji Pokok</label>
+                        <label for="gaji_pokok">Gaji (/hari)</label>
                         <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok"
                             value="{{ isset($data->gaji_pokok) ? $data->gaji_pokok : '' }}" required>
                     </div>

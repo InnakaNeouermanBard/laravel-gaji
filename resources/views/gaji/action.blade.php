@@ -63,10 +63,9 @@ $is_edit = isset($data);
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="gaji_pokok">Gaji Pokok</label>
-                                        <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok"
-                                            value="{{ isset($data->gaji_pokok) ? $data->gaji_pokok : '' }}" readonly
-                                            required>
+                                        <label for="total_gaji">gaji_pokok</label>
+                                        <input type="text" class="form-control" id="total_gaji" name="total_gaji"
+                                            readonly required>
                                     </div>
                                     {{-- <div class="form-group">
                                         <label for="total_uang_makan">Total Uang Makan</label>
@@ -88,6 +87,12 @@ $is_edit = isset($data);
                                         <label for="total_bonus">Total Bonus</label>
                                         <input type="text" class="form-control" id="total_bonus" name="total_bonus"
                                             value="{{ isset($data->total_bonus) ? $data->total_bonus : '' }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gaji_pokok">Total Gaji</label>
+                                        <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok"
+                                            value="{{ isset($data->gaji_pokok) ? $data->gaji_pokok : '' }}" readonly
+                                            required>
                                     </div>
                                 </div>
                             </div>
@@ -136,10 +141,15 @@ $is_edit = isset($data);
                     //     data?.data?.absensi?.masuk
                     const t_tunjangan_transportasi = 0
                     // const t_bonus = t_uang_lembur + t_uang_makan + t_tunjangan_transportasi
-
+                    const gaji_pokok = data?.data?.absensi?.masuk * data?.data?.gaji
+                        ?.gaji_pokok
+                    const t_gaji = data?.data?.absensi?.masuk * data?.data?.gaji?.gaji_pokok +
+                        t_uang_lembur
                     $('#total_uang_makan').val(t_uang_makan)
                     $('#total_uang_lembur').val(t_uang_lembur)
                     $('#total_tunjangan_transportasi').val(t_tunjangan_transportasi)
+                    $('#total_gaji').val(gaji_pokok)
+
                     // $('#total_bonus').val(t_bonus)
 
                     $('#total_masuk').val(data?.data?.absensi?.masuk)
@@ -147,7 +157,8 @@ $is_edit = isset($data);
                     $('#total_alpha').val(data?.data?.absensi?.alpha)
 
 
-                    $('#gaji_pokok').val(data?.data?.gaji?.gaji_pokok)
+                    // $('#gaji_pokok').val(data?.data?.gaji?.gaji_pokok)
+                    $('#gaji_pokok').val(t_gaji)
                     $('#potongan_gaji').val(data?.data?.potongan)
                     $('#total_lembur').val(data?.data?.lembur)
                 } else {
@@ -187,17 +198,21 @@ $is_edit = isset($data);
                         //     data?.data?.absensi?.masuk
                         const t_tunjangan_transportasi = 0
                         // const t_bonus = t_uang_lembur + t_uang_makan + t_tunjangan_transportasi
-
+                        const gaji_pokok = data?.data?.absensi?.masuk * data?.data?.gaji
+                            ?.gaji_pokok
+                        const t_gaji = data?.data?.absensi?.masuk * data?.data?.gaji?.gaji_pokok +
+                            t_uang_lembur
                         $('#total_uang_makan').val(t_uang_makan)
                         $('#total_uang_lembur').val(t_uang_lembur)
                         $('#total_tunjangan_transportasi').val(t_tunjangan_transportasi)
+                        $('#total_gaji').val(gaji_pokok)
                         // $('#total_bonus').val(t_bonus)
 
                         $('#total_masuk').val(data?.data?.absensi?.masuk)
                         $('#total_izin').val(data?.data?.absensi?.izin)
                         $('#total_alpha').val(data?.data?.absensi?.alpha)
 
-                        $('#gaji_pokok').val(data?.data?.gaji?.gaji_pokok)
+                        $('#gaji_pokok').val(t_gaji)
                         $('#potongan_gaji').val(data?.data?.potongan)
                         $('#total_lembur').val(data?.data?.lembur)
                     } else {

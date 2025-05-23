@@ -1,20 +1,26 @@
 <?php
 
-use App\Http\Controllers\AbsensiController;
-use App\Http\Controllers\Auth\ProfileController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\GajiController;
-use App\Http\Controllers\JabatanController;
-use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\LaporanAbsen;
+use App\Models\Gaji;
+use App\Models\Karyawan;
+use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\LaporanGaji;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LaporanAbsen;
+use App\Http\Controllers\SPKController;
+use App\Http\Controllers\GajiController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanSlipGaji;
 use App\Http\Controllers\LemburController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PotongGajiController;
-use App\Http\Controllers\SPKController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\RekeningKaryawanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +80,12 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::resource('gaji', GajiController::class);
     Route::put('gaji/{gaji}/approve', [GajiController::class, 'approve'])->name('gaji.approve');
     Route::put('gaji/{gaji}/decline', [GajiController::class, 'decline'])->name('gaji.decline');
+    Route::put('gaji/{gaji}/cancel', [GajiController::class, 'cancel'])->name('gaji.cancel');
+    Route::put('gaji/{gaji}/pay', [GajiController::class, 'bayar'])->name('gaji.bayar');
+    // Tambahkan route ini di web.php
+    Route::post('/gaji/hitung-otomatis', [GajiController::class, 'hitungGajiOtomatis'])->name('gaji.hitung.otomatis');
+    // Tambahkan route ini di web.php
+    Route::post('/gaji/cek-data', [GajiController::class, 'cekDataGaji'])->name('gaji.cek.data');
 
     //laporan
     Route::get('laporan-gaji', [LaporanGaji::class, 'index'])->name('laporan.gaji');
@@ -82,6 +94,43 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('laporan-absen', [LaporanAbsen::class, 'print'])->name('laporan.absen.print');
     Route::get('slip-gaji', [LaporanSlipGaji::class, 'index'])->name('slip.gaji');
     Route::post('slip-gaji', [LaporanSlipGaji::class, 'print'])->name('slip.gaji.print');
+
+    // Route::get('/mail', function () {
+    //     $name = 'Test Gaji';
+
+    //     Mail::to('innakabard@gmail.com')->send(new WelcomeMail($name));
+    // });
+
+    // Route::get('/mail', function () {
+    //     // Pastikan data ini ada di database
+    //     $karyawanId = 1;
+    //     $gajiId = 9;
+
+    //     $karyawan = Karyawan::find($karyawanId);
+    //     $gaji = Gaji::find($gajiId);
+
+    //     if (!$karyawan) {
+    //         return response('Karyawan tidak ditemukan', 404);
+    //     }
+
+    //     if (!$gaji) {
+    //         return response('Gaji tidak ditemukan', 404);
+    //     }
+
+    //     // Jika data ditemukan, kirim email
+    //     Mail::to('mutiadian45@gmail.com')->send(new WelcomeMail($karyawanId, $gajiId));
+
+    //     return 'Email telah dikirim!';
+    // });
+
+
+    Route::post('/gaji/{gaji}/bayar', [GajiController::class, 'kirimEmail'])->name('gaji.kirimEmail');
+
+    // CRUD Rekening Karyawan
+    Route::resource('rekenings', RekeningKaryawanController::class);
+
+    // CRUD Transaksi
+    Route::resource('transaksi', TransaksiController::class);
 
     //ubah password
     Route::get('profile', [ProfileController::class, 'index'])->name('ubah-profile');

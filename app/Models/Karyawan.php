@@ -28,7 +28,10 @@ class Karyawan extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'status_perkawinan',
-        'tanggal_masuk'
+        'tanggal_masuk',
+        'nama_bank',
+        'no_rekening',
+        'email',
     ];
 
     /**

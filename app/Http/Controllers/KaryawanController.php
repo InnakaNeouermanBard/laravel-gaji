@@ -55,6 +55,10 @@ class KaryawanController extends Controller
             'tanggal_lahir' => 'required|date',
             'status_perkawinan' => 'required',
             'tanggal_masuk' => 'required|date',
+            'nama_bank' => 'required',
+            'no_rekening' => 'required',
+            'email' => 'required',
+
         ], [
             'id_jabatan.required' => 'Jabatan tidak boleh kosong',
             'nik.required' => 'NIK tidak boleh kosong',
@@ -67,6 +71,9 @@ class KaryawanController extends Controller
             'tanggal_lahir.required' => 'Tanggal lahir tidak boleh kosong',
             'status_perkawinan.required' => 'Status perkawinan tidak boleh kosong',
             'tanggal_masuk.required' => 'Tanggal masuk tidak boleh kosong',
+            'nama_bank.required' => 'Nama bank tinggal tidak boleh kosong',
+            'no_rekening.required' => 'No rekening tidak boleh kosong',
+            'email.required' => 'email tidak boleh kosong',
         ]);
 
         if ($validator->fails()) {
@@ -97,7 +104,11 @@ class KaryawanController extends Controller
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'status_perkawinan' => $request->status_perkawinan,
-            'tanggal_masuk' => $request->tanggal_masuk
+            'tanggal_masuk' => $request->tanggal_masuk,
+            'nama_bank' => $request->nama_bank,
+            'no_rekening' => $request->no_rekening,
+            'email' => $request->email,
+
         ]);
 
         return $this->setResponse(true, "Sukses membuat karyawan");
@@ -140,6 +151,9 @@ class KaryawanController extends Controller
             'tanggal_lahir' => 'required|date',
             'status_perkawinan' => 'required',
             'tanggal_masuk' => 'required|date',
+            'nama_bank' => 'required',
+            'no_rekening' => 'required',
+            'email' => 'required',
         ], [
             'id_jabatan.required' => 'Jabatan tidak boleh kosong',
             'nik.required' => 'NIK tidak boleh kosong',
@@ -152,6 +166,9 @@ class KaryawanController extends Controller
             'tanggal_lahir.required' => 'Tanggal lahir tidak boleh kosong',
             'status_perkawinan.required' => 'Status perkawinan tidak boleh kosong',
             'tanggal_masuk.required' => 'Tanggal masuk tidak boleh kosong',
+            'nama_bank.required' => 'Nama bank tidak boleh kosong',
+            'no_rekening.required' => 'No rekening tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
         ]);
 
         if ($validator->fails()) {
@@ -182,7 +199,10 @@ class KaryawanController extends Controller
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'status_perkawinan' => $request->status_perkawinan,
-            'tanggal_masuk' => $request->tanggal_masuk
+            'tanggal_masuk' => $request->tanggal_masuk,
+            'nama_bank' => $request->nama_bank,
+            'no_rekening' => $request->no_rekening,
+            'email' => $request->email,
         ]);
 
         return $this->setResponse(true, "Sukses update karyawan");

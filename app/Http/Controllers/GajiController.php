@@ -1,11 +1,14 @@
 <?php
-
+// GajiController 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Gaji;
 use App\Models\Karyawan;
-use Carbon\Carbon;
+use App\Mail\GajiBayarMail;
+use App\Mail\WelcomeMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class GajiController extends Controller
@@ -184,5 +187,52 @@ class GajiController extends Controller
         } else {
             return $this->setResponse(true, "Gagal menolak gaji");
         }
+    }
+    public function cancel(string $id)
+    {
+        $gaji = Gaji::where('id_gaji', $id)->update([
+            'status' => 0
+        ]);
+
+        if ($gaji) {
+            return $this->setResponse(true, "Sukses mambatalkan gaji");
+        } else {
+            return $this->setResponse(true, "Gagal membatalkan gaji");
+        }
+    }
+    public function bayar(string $id)
+    {
+        $gaji = Gaji::where('id_gaji', $id)->update([
+            'status' => 3
+        ]);
+
+        if ($gaji) {
+            return $this->setResponse(true, "Sukses mangirim gaji");
+        } else {
+            return $this->setResponse(true, "Gagal mngirim gaji");
+        }
+    }
+
+    public function kirimEmail(Request $request, $gajiId)
+    {
+        // Ambil data gaji berdasarkan ID
+        $gaji = Gaji::find($gajiId);
+
+        // Pastikan gaji ditemukan
+        if (!$gaji) {
+            return redirect()->back()->with('error', 'Gaji tidak ditemukan');
+        }
+
+        // Ambil data karyawan terkait
+        $karyawan = Karyawan::find($gaji->id_karyawan);
+
+        // Update status gaji menjadi 'dibayar' (status 1)
+        $gaji->status = 3; // 1 berarti dibayar
+        $gaji->save();
+
+        // Kirim email menggunakan mailable
+        Mail::to($karyawan->email)->send(new WelcomeMail($gaji));
+
+        return redirect()->route('gaji.index')->with('success', 'Gaji telah dibayar dan email berhasil dikirim');
     }
 }

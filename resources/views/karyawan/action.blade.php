@@ -113,6 +113,27 @@ $is_edit = isset($data);
                                 value="{{ isset($data->tanggal_masuk) ? $data->tanggal_masuk : '' }}" required>
                         </div>
                     </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group required">
+                            <label for="nama_bank">Nama Bank</label>
+                            <input type="text" class="form-control" id="nama_bank" name="nama_bank"
+                                value="{{ isset($data->nama_bank) ? $data->nama_bank : '' }}" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group required">
+                            <label for="no_rekening">No Rekening</label>
+                            <input type="text" class="form-control" id="no_rekening" name="no_rekening"
+                                value="{{ isset($data->no_rekening) ? $data->no_rekening : '' }}" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group required">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" name="email"
+                                value="{{ isset($data->email) ? $data->email : '' }}" required>
+                        </div>
+                    </div>
                     <div class="form-group required">
                         <label for="alamat_tinggal">Alamat Tinggal</label>
                         <textarea rows="10" type="text" class="form-control" id="alamat_tinggal" name="alamat_tinggal" required>{{ isset($data->alamat_tinggal) ? $data->alamat_tinggal : '' }}</textarea>

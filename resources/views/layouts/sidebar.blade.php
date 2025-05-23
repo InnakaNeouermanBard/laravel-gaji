@@ -71,6 +71,12 @@
                                         <span>Absensi</span>
                                     </a>
                                 </li>
+                                <li class="{{ request()->routeIs('rekening_karyawan.*') ? 'active' : '' }}">
+                                    <a href="{{ route('rekenings.index') }}">
+                                        <i class="ti-more"></i>
+                                        <span>Rekening</span>
+                                    </a>
+                                </li>
                                 <li class="{{ request()->routeIs('lembur.*') ? 'active' : '' }}">
                                     <a href="{{ route('lembur.index') }}">
                                         <i class="ti-more"></i>

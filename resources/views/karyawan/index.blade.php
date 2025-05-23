@@ -54,7 +54,7 @@
                                         <th>Nama</th>
                                         <th>Jenis Kelamin</th>
                                         <th>Jabatan</th>
-                                        <th>Tanggal Masuk</th>
+                                        <th>Tanggal Buat</th>
                                         <th>Status</th>
                                         @if (auth()->user()->level == 0)
                                             <th>Action</th>

@@ -374,6 +374,30 @@
             });
         })
 
+        $(".batal-text").on("click", function(e) {
+            e.preventDefault();
+            var accButton = $(this);
+            Swal.fire({
+                title: 'Konfirmasi Batal',
+                text: 'Apakah yakin untuk membatalkan gaji ini?',
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak',
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: !1,
+                allowOutsideClick: false,
+            }).then(function(t) {
+                if (t.value) {
+                    // If user confirms deletion, submit the associated form
+                    accButton.closest("form").submit();
+                }
+            });
+        })
+
         $('body').on('click', '.ajax_modal', function(ev) {
             ev.preventDefault()
             let u = $(this).data('url')

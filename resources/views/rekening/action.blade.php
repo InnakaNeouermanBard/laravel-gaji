@@ -3,21 +3,21 @@ $is_edit = isset($data);
 ?>
 {{-- lembur.action  --}}
 <form id="main-form" class="form-horizontal"
-    action="{{ $is_edit ? route('lembur.update', $data) : route('lembur.store') }}" role="form" method="POST"
-    autocomplete="off" data-reload="true">
+    action="{{ $is_edit ? route('rekening_karyawan.update', $data) : route('rekening_karyawan.store') }}" role="form"
+    method="POST" autocomplete="off" data-reload="true">
     @csrf
     {!! $is_edit ? method_field('PUT') : '' !!}
     <div id="modal-master" class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ $is_edit ? 'Edit' : 'Tambah' }} Lembur</h5>
+                <h5 class="modal-title">{{ $is_edit ? 'Edit' : 'Tambah' }} Rekening</h5>
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group required">
-                        <label for="id_karyawan">Karyawan</label>
-                        <select class="form-select form-control" id="id_karyawan" name="id_karyawan" required>
+                        <label for="karyawan_id">Karyawan</label>
+                        <select class="form-select form-control" id="karyawan_id" name="karyawan_id" required>
                             <option value="" selected disabled>Pilih Karyawan</option>
                             @foreach ($karyawans as $item)
                                 <option value="{{ $item->id_karyawan }}"
@@ -27,19 +27,19 @@ $is_edit = isset($data);
                         </select>
                     </div>
                     <div class="form-group required">
-                        <label for="tanggal">Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal" name="tanggal"
-                            value="{{ isset($data->tanggal) ? $data->tanggal : '' }}" required>
+                        <label for="bank_name">Bank</label>
+                        <input type="text" class="form-control" id="bank_name" name="bank_name"
+                            value="{{ isset($data->bank_name) ? $data->bank_name : '' }}" required>
                     </div>
                     <div class="form-group required">
-                        <label for="jam">Jumlah Jam</label>
-                        <input type="text" class="form-control" id="jam" name="jam"
-                            value="{{ isset($data->jam) ? $data->jam : '' }}" required>
+                        <label for="rekening_number">Nomor Rekening</label>
+                        <input type="number" class="form-control" id="rekening_number" name="rekening_number"
+                            value="{{ isset($data->rekening_number) ? $data->rekening_number : '' }}" required>
                     </div>
                     <div class="form-group required">
-                        <label for="keterangan">Keterangan</label>
-                        <input type="text" class="form-control" id="keterangan" name="keterangan"
-                            value="{{ isset($data->keterangan) ? $data->keterangan : '' }}" required>
+                        <label for="pemilik_rekening">Pemilik Rekening</label>
+                        <input type="text" class="form-control" id="pemilik_rekening" name="pemilik_rekening"
+                            value="{{ isset($data->pemilik_rekening) ? $data->pemilik_rekening : '' }}" required>
                     </div>
                 </div>
             </div>
