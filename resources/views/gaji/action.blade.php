@@ -16,9 +16,9 @@ $is_edit = isset($data);
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group required">
-                        <label for="id_karyawan">Karyawan</label>
+                        <label for="id_karyawan">Pegawai</label>
                         <select class="custom-select form-control" id="id_karyawan" name="id_karyawan" required>
-                            <option value="" disabled selected>Pilih Karyawan</option>
+                            <option value="" disabled selected>Pilih Pegawai</option>
                             @foreach ($karyawans as $item)
                                 <option value="{{ $item->id_karyawan }}"
                                     @if (isset($data->id_karyawan) && $item->id_karyawan == $data->id_karyawan) selected @endif>

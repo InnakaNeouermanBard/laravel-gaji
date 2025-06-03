@@ -45,7 +45,7 @@
                 <th>Nama</th>
                 <th>Jenis Kelamin</th>
                 <th>Jabatan</th>
-                <th>Gaji Pokok</th>
+                <th>Gaji + Lembur</th>
                 <th>Total Bonus</th>
                 <th>Potongan</th>
                 <th>Total Gaji</th>

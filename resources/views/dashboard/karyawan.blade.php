@@ -24,7 +24,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="alert bg-warning alert-dismissible">
-            Selamat datang, Anda login sebagai karyawan
+            Selamat datang, Anda login sebagai Pegawai
         </div>
 
         <div class="card">
@@ -32,7 +32,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex flex-column">
                         <h3 class="card-title mt-1">
-                            Data Karyawan
+                            Data Pegawai
                         </h3>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                         <table class="table table-full-width">
                             <tbody>
                                 <tr>
-                                    <td>Nama Karyawan</td>
+                                    <td>Nama Pegawai</td>
                                     <td>:</td>
                                     <td>{{ $profile->karyawan->nama_karyawan }}</td>
                                 </tr>

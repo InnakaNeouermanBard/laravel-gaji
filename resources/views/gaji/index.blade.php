@@ -48,7 +48,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        Filter data gaji karyawan
+                        Filter data gaji Pegawai
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div class="col-12">
                                 {{-- <li><a class="dropdown-item" href="#">Action</a></li> --}}
@@ -85,13 +85,13 @@
                         </div>
                         <div class="alert alert-info alert-dismissible">
                             @if (request()->has('bulan') && request()->has('tahun'))
-                                Menampilkan data gaji karyawan bulan
+                                Menampilkan data gaji Pegawai bulan
                                 {{ \Carbon\Carbon::createFromFormat('m', request()->get('bulan'))->locale('id')->isoFormat('MMMM') }}
                                 tahun
                                 {{ request()->get('tahun') }}. <a class="badge badge-pill badge-dark"
                                     href="{{ route('gaji.index') }}">Reset</a>
                             @else
-                                Menampilkan data gaji karyawan bulan semua
+                                Menampilkan data gaji Pegawai bulan semua
                             @endif
                         </div>
 
@@ -130,8 +130,8 @@
                                                 @endif
                                             </td>
                                             {{-- <td>{{ $gaji->karyawan->jabatan->nama_jabatan }}</td> --}}
-                                            <td>@currency($gaji->total_bonus)</td>
                                             <td>@currency($gaji->gaji_pokok)</td>
+                                            <td>@currency($gaji->total_bonus)</td>
                                             <td>@currency($gaji->potongan_gaji)</td>
                                             <td>@currency($gaji->total_gaji)</td>
                                             <td>

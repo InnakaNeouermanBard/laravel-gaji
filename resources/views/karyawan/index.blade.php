@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Karyawan')
+@section('title', 'Pegawai')
 
 @section('content')
     <div class="content-header">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h4 class="page-title">Karyawan</h4>
+                <h4 class="page-title">Pegawai</h4>
                 <div class="d-inline-block align-items-center">
                     <nav>
                         <ol class="breadcrumb">
@@ -16,7 +16,7 @@
                             <li class="breadcrumb-item">
                                 <a href="#">Master Data</i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Karyawan</li>
+                            <li class="breadcrumb-item active" aria-current="page">Pegawai</li>
                         </ol>
                     </nav>
                 </div>
@@ -32,7 +32,7 @@
                     <div class="box-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="box-title mt-1">
-                                Karyawan
+                                Pegawai
                             </h4>
                             <div class="box-tools">
                                 @if (auth()->user()->level == 0)

@@ -21,7 +21,7 @@ class LaporanSlipGaji extends Controller
     {
         $gajis = Gaji::with('karyawan')->with('karyawan.jabatan')->whereMonth('periode_gaji', $request->bulan)
             ->whereYear('periode_gaji', $request->tahun)
-            ->where('status', 1);
+            ->where('status', 3);
 
         if (auth()->user()->level == 2) {
             $gajis = $gajis->where('id_karyawan', auth()->user()->karyawan->id_karyawan);
@@ -65,11 +65,11 @@ class LaporanSlipGaji extends Controller
             $item->total_uang_lembur = $lembur * $item->karyawan->jabatan->uang_lembur;
             $item->total_uang_makan = $absensi->masuk * $item->karyawan->jabatan->uang_makan;
             $item->total_tunjangan_transportasi = $absensi->masuk * $item->karyawan->jabatan->tunjangan_transportasi;
-            $item->total_bonus = $item->total_uang_lembur + $item->total_uang_makan + $item->total_tunjangan_transportasi;
-
+            // $item->total_bonus = $item->total_uang_lembur + $item->total_uang_makan + $item->total_tunjangan_transportasi;
+            $item->gaji_awal = $item->gaji_pokok - $item->total_uang_lembur; // gaji * total jumlah masuk
             $item->potongan_gaji = $potongan_gaji;
 
-            $item->total_diterima = $item->karyawan->jabatan->gaji_pokok + $item->total_bonus - $item->potongan_gaji;
+            $item->total_diterima = $item->gaji_pokok + $item->total_bonus - $item->potongan_gaji;
             return $item;
         });
 

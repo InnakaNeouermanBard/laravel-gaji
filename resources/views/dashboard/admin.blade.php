@@ -29,7 +29,7 @@
                 <div class="small-box bg-info">
                     <div class="inner">
                         <h3>{{ $data_karyawan }}</h3>
-                        <p>Data Karyawan</p>
+                        <p>Data Pegawai</p>
                     </div>
                     <div class="icon">
                         {{-- <i class="nav-icon fas fa-user-alt"></i> --}}

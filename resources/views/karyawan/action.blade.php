@@ -10,7 +10,7 @@ $is_edit = isset($data);
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ $is_edit ? 'Edit' : 'Tambah' }} Karyawan</h5>
+                <h5 class="modal-title">{{ $is_edit ? 'Edit' : 'Tambah' }} Pegawai</h5>
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -53,7 +53,7 @@ $is_edit = isset($data);
 
                     <div class="col-12 col-md-6">
                         <div class="form-group required">
-                            <label for="nama_karyawan">Nama Karyawan</label>
+                            <label for="nama_karyawan">Nama Pegawai</label>
                             <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan"
                                 value="{{ isset($data->nama_karyawan) ? $data->nama_karyawan : '' }}" required>
                         </div>

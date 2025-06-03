@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
 use App\Models\Jabatan;
 use App\Models\Karyawan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
@@ -86,7 +88,8 @@ class KaryawanController extends Controller
 
         $user = User::create([
             'username' => $request->nik,
-            'password' => Hash::make($request->nik),
+            // 'password' => Hash::make($request->nik),
+            'password' => Hash::make('password'),
             'name' => $request->nama_karyawan,
             'email' => $request->nik . '@gmail.com',
             'level' => 2
@@ -213,16 +216,34 @@ class KaryawanController extends Controller
      */
     public function destroy(string $id)
     {
-        $karyawan = Karyawan::findOrFail($id);
-        $user = User::findOrFail($karyawan->id_user);
-        $karyawan->delete();
-        $user->delete();
+        try {
+            // Mulai database transaction untuk memastikan integritas data
+            DB::beginTransaction();
 
+            // Cari data karyawan
+            $karyawan = Karyawan::findOrFail($id);
 
-        if ($karyawan) {
-            return $this->setResponse(true, "Sukses hapus karyawan");
-        } else {
-            return $this->setResponse(true, "Gagal hapus karyawan");
+            // Hapus semua data absensi yang terkait dengan karyawan ini
+            Absensi::where('id_karyawan', $id)->delete();
+
+            // Cari data user yang terkait
+            $user = User::findOrFail($karyawan->id_user);
+
+            // Hapus data karyawan
+            $karyawan->delete();
+
+            // Hapus data user
+            $user->delete();
+
+            // Commit transaction jika semua berhasil
+            DB::commit();
+
+            return $this->setResponse(true, "Sukses hapus karyawan beserta data absensinya");
+        } catch (\Exception $e) {
+            // Rollback transaction jika terjadi error
+            DB::rollback();
+
+            return $this->setResponse(false, "Gagal hapus karyawan: " . $e->getMessage());
         }
     }
 }

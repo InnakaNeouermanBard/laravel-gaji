@@ -18,7 +18,7 @@ class LaporanGaji extends Controller
     {
         $gajis = Gaji::with('karyawan')->whereMonth('periode_gaji', $request->bulan)
             ->whereYear('periode_gaji', $request->tahun)
-            ->where('status', 1)
+            ->where('status', 3)
             ->get();
 
         $gajis = $gajis->map(function ($item) {

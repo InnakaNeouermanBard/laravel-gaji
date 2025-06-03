@@ -150,7 +150,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 mb-4">
+            {{-- <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card-stats shadow border-0">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -203,172 +203,175 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
-        <!-- Filter and Table Card -->
-        <div class="row">
-            <div class="col-12">
-                <div class="datatables-card shadow">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="m-0 font-weight-bold text-primary">Data Absensi Karyawan</h5>
-                            <div>
-                                <a href="#" class="btn btn-sm btn-success btn-modern me-1" id="btn-export"
-                                    onclick="event.preventDefault(); document.getElementById('export-form').submit();">
-                                    <i class="fa fa-file-excel-o me-1"></i> Export
-                                </a>
-                                <a href="#" class="btn btn-sm btn-warning btn-modern me-1 ajax_modal"
-                                    data-url="{{ route('absensi.import.form') }}">
-                                    <i class="fa fa-upload me-1"></i> Import
-                                </a>
-                                <a href="#" class="btn btn-sm btn-primary btn-modern ajax_modal"
-                                    data-url="{{ route('absensi.create') }}">
-                                    <i class="fa fa-plus me-1"></i> Tambah
-                                </a>
+            <!-- Filter and Table Card -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="datatables-card shadow">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center gap-5">
+                                <h5 class="m-0 font-weight-bold text-primary gap-2">Data Absensi Karyawan </h5>
+                                <div>
+                                    <a href="#" class="btn btn-sm btn-success btn-modern me-1" id="btn-export"
+                                        onclick="event.preventDefault(); document.getElementById('export-form').submit();">
+                                        <i class="fa fa-file-excel-o me-1"></i> Export
+                                    </a>
+                                    {{-- <a href="#" class="btn btn-sm btn-warning btn-modern me-1 ajax_modal"
+                                        data-url="{{ route('absensi.import.form') }}">
+                                        <i class="fa fa-upload me-1"></i> Import
+                                    </a> --}}
+                                    <a href="#" class="btn btn-sm btn-primary btn-modern ajax_modal"
+                                        data-url="{{ route('absensi.create') }}">
+                                        <i class="fa fa-plus me-1"></i> Tambah
+                                    </a>
 
-                                <form id="export-form" action="{{ route('absensi.export') }}" method="GET"
-                                    style="display: none;">
-                                    <input type="hidden" name="bulan" id="export-bulan"
-                                        value="{{ request()->get('bulan', date('n')) }}">
-                                    <input type="hidden" name="tahun" id="export-tahun"
-                                        value="{{ request()->get('tahun', date('Y')) }}">
+                                    <form id="export-form" action="{{ route('absensi.export') }}" method="GET"
+                                        style="display: none;">
+                                        <input type="hidden" name="bulan" id="export-bulan"
+                                            value="{{ request()->get('bulan', date('n')) }}">
+                                        <input type="hidden" name="tahun" id="export-tahun"
+                                            value="{{ request()->get('tahun', date('Y')) }}">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Filter Section -->
+                            <div class="filter-container mb-4">
+                                <form id="filter-form" method="GET">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4 mb-2 mb-md-0">
+                                            <div class="d-flex align-items-center">
+                                                <label class="me-2 mb-0 text-nowrap" for="bulan">Bulan:</label>
+                                                <select class="form-select form-control month-filter" name="bulan"
+                                                    id="bulan">
+                                                    @foreach (['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'] as $bulan)
+                                                        <option value="{{ $loop->index + 1 }}"
+                                                            {{ $loop->index + 1 == request()->get('bulan', date('n')) ? 'selected' : '' }}>
+                                                            {{ $bulan }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-2 mb-md-0">
+                                            <div class="d-flex align-items-center">
+                                                <label class="me-2 mb-0 text-nowrap" for="tahun">Tahun:</label>
+                                                <select class="form-select form-control year-filter" name="tahun"
+                                                    id="tahun">
+                                                    @for ($tahun = date('Y') - 5; $tahun <= date('Y'); $tahun++)
+                                                        <option value="{{ $tahun }}"
+                                                            {{ $tahun == request()->get('tahun', date('Y')) ? 'selected' : '' }}>
+                                                            {{ $tahun }}
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="d-flex">
+                                                <button type="submit" class="btn btn-primary btn-modern me-2">
+                                                    <i class="fa fa-filter me-1"></i> Filter
+                                                </button>
+                                                @if (request()->has('bulan') || request()->has('tahun'))
+                                                    <a href="{{ route('absensi.index') }}"
+                                                        class="btn btn-outline-secondary btn-modern">
+                                                        <i class="fa fa-refresh me-1"></i> Reset
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <!-- Filter Section -->
-                        <div class="filter-container mb-4">
-                            <form id="filter-form" method="GET">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 mb-2 mb-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <label class="me-2 mb-0 text-nowrap" for="bulan">Bulan:</label>
-                                            <select class="form-select form-control month-filter" name="bulan"
-                                                id="bulan">
-                                                @foreach (['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'] as $bulan)
-                                                    <option value="{{ $loop->index + 1 }}"
-                                                        {{ $loop->index + 1 == request()->get('bulan', date('n')) ? 'selected' : '' }}>
-                                                        {{ $bulan }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-2 mb-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <label class="me-2 mb-0 text-nowrap" for="tahun">Tahun:</label>
-                                            <select class="form-select form-control year-filter" name="tahun"
-                                                id="tahun">
-                                                @for ($tahun = date('Y') - 5; $tahun <= date('Y'); $tahun++)
-                                                    <option value="{{ $tahun }}"
-                                                        {{ $tahun == request()->get('tahun', date('Y')) ? 'selected' : '' }}>
-                                                        {{ $tahun }}
-                                                    </option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="d-flex">
-                                            <button type="submit" class="btn btn-primary btn-modern me-2">
-                                                <i class="fa fa-filter me-1"></i> Filter
-                                            </button>
-                                            @if (request()->has('bulan') || request()->has('tahun'))
-                                                <a href="{{ route('absensi.index') }}"
-                                                    class="btn btn-outline-secondary btn-modern">
-                                                    <i class="fa fa-refresh me-1"></i> Reset
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
+
+                            <!-- Alert status filter -->
+                            @if (request()->has('bulan') && request()->has('tahun'))
+                                <div class="alert alert-info alert-dismissible fade show">
+                                    <i class="fa fa-info-circle me-1"></i>
+                                    Menampilkan data kehadiran karyawan bulan
+                                    <strong>{{ \Carbon\Carbon::createFromFormat('m', request()->get('bulan'))->locale('id')->isoFormat('MMMM') }}</strong>
+                                    tahun <strong>{{ request()->get('tahun') }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                                 </div>
-                            </form>
-                        </div>
+                            @endif
 
-                        <!-- Alert status filter -->
-                        @if (request()->has('bulan') && request()->has('tahun'))
-                            <div class="alert alert-info alert-dismissible fade show">
-                                <i class="fa fa-info-circle me-1"></i>
-                                Menampilkan data kehadiran karyawan bulan
-                                <strong>{{ \Carbon\Carbon::createFromFormat('m', request()->get('bulan'))->locale('id')->isoFormat('MMMM') }}</strong>
-                                tahun <strong>{{ request()->get('tahun') }}</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </div>
-                        @endif
-
-                        <!-- Data Table -->
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped" id="dataTable" width="100%"
-                                cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th width="5%">#</th>
-                                        <th>Periode</th>
-                                        <th>NIK</th>
-                                        <th>Nama</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Jabatan</th>
-                                        <th>Hadir</th>
-                                        <th>Izin</th>
-                                        <th>Alpha</th>
-                                        <th width="10%">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($absensis as $index => $absensi)
+                            <!-- Data Table -->
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped" id="dataTable" width="100%"
+                                    cellspacing="0">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($absensi->bulan)->locale('id')->isoFormat('MMMM Y') }}
-                                            </td>
-                                            <td>{{ $absensi->karyawan->nik }}</td>
-                                            <td>{{ $absensi->karyawan->nama_karyawan }}</td>
-                                            <td>
-                                                @if ($absensi->karyawan->kelamin == 'L')
-                                                    <span class="badge bg-primary badge-modern">Laki-Laki</span>
-                                                @else
-                                                    <span class="badge bg-info badge-modern">Perempuan</span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $absensi->karyawan->jabatan->nama_jabatan }}</td>
-                                            <td>
-                                                <span class="badge bg-success badge-modern">{{ $absensi->masuk }}</span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-warning badge-modern">{{ $absensi->izin }}</span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-danger badge-modern">{{ $absensi->alpha }}</span>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <a href="#"
-                                                        data-url="{{ route('absensi.edit', $absensi->id_absensi) }}"
-                                                        class="btn btn-sm btn-warning ajax_modal me-1">
-                                                        <i class="fa fa-pencil"></i>
-                                                    </a>
-                                                    <form data-reload="true"
-                                                        id="main-form-delete-{{ $absensi->id_absensi }}"
-                                                        action="{{ route('absensi.destroy', $absensi) }}" method="POST"
-                                                        class="delete-form">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="confirm-text btn btn-sm btn-danger">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
+                                            <th width="5%">#</th>
+                                            <th>Periode</th>
+                                            <th>NIK</th>
+                                            <th>Nama</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Jabatan</th>
+                                            <th>Hadir</th>
+                                            <th>Izin</th>
+                                            <th>Alpha</th>
+                                            <th width="10%">Action</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($absensis as $index => $absensi)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($absensi->bulan)->locale('id')->isoFormat('MMMM Y') }}
+                                                </td>
+                                                <td>{{ $absensi->karyawan->nik }}</td>
+                                                <td>{{ $absensi->karyawan->nama_karyawan }}</td>
+                                                <td>
+                                                    @if ($absensi->karyawan->kelamin == 'L')
+                                                        <span class="badge bg-primary badge-modern">Laki-Laki</span>
+                                                    @else
+                                                        <span class="badge bg-info badge-modern">Perempuan</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $absensi->karyawan->jabatan->nama_jabatan }}</td>
+                                                <td>
+                                                    <span
+                                                        class="badge bg-success badge-modern">{{ $absensi->masuk }}</span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="badge bg-warning badge-modern">{{ $absensi->izin }}</span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="badge bg-danger badge-modern">{{ $absensi->alpha }}</span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <a href="#"
+                                                            data-url="{{ route('absensi.edit', $absensi->id_absensi) }}"
+                                                            class="btn btn-sm btn-warning ajax_modal me-1">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <form data-reload="true"
+                                                            id="main-form-delete-{{ $absensi->id_absensi }}"
+                                                            action="{{ route('absensi.destroy', $absensi) }}"
+                                                            method="POST" class="delete-form">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="confirm-text btn btn-sm btn-danger">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 @endsection
 

@@ -42,7 +42,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        Filter laporan absen karyawan
+                        Filter laporan absen Pegawai
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div class="col-12">
                                 {{-- <li><a class="dropdown-item" href="#">Action</a></li> --}}

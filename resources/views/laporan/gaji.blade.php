@@ -40,7 +40,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        Filter laporan gaji karyawan
+                        Filter laporan gaji Pegawai
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <div class="col-12">
                                 {{-- <li><a class="dropdown-item" href="#">Action</a></li> --}}

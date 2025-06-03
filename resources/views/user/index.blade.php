@@ -52,7 +52,7 @@
                                         <th>#</th>
                                         <th>Username</th>
                                         <th>Nama</th>
-                                        <th>Email</th>
+                                        {{-- <th>Email</th> --}}
                                         <th>Role</th>
                                         @if (auth()->user()->level == 0)
                                             <th>Action</th>
@@ -65,7 +65,7 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
+                                            {{-- <td>{{ $user->email }}</td> --}}
                                             <td>{{ $user->getRole() }}</td>
                                             @if (auth()->user()->level == 0)
                                                 <td>

@@ -48,20 +48,33 @@ class AbsensiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_karyawan' => 'required',
-            'bulan' => 'required',
-            'masuk' => 'required|numeric',
-            'izin' => 'required|numeric',
-            'alpha' => 'required|numeric',
+            'bulan' => 'required|date_format:Y-m',
+            'masuk' => 'required|numeric|min:0|max:31',
+            'izin' => 'required|numeric|min:0|max:31',
+            'alpha' => 'required|numeric|min:0|max:31',
         ], [
             'id_karyawan.required' => 'Karyawan tidak boleh kosong',
             'bulan.required' => 'Bulan tidak boleh kosong',
+            'bulan.date_format' => 'Format bulan tidak valid (YYYY-MM)',
             'masuk.required' => 'Jumlah hari masuk tidak boleh kosong',
             'masuk.numeric' => 'Jumlah hari masuk harus berupa angka',
+            'masuk.min' => 'Jumlah hari masuk minimal 0',
+            'masuk.max' => 'Jumlah hari masuk maksimal 31',
             'izin.required' => 'Jumlah hari izin tidak boleh kosong',
             'izin.numeric' => 'Jumlah hari izin harus berupa angka',
+            'izin.min' => 'Jumlah hari izin minimal 0',
+            'izin.max' => 'Jumlah hari izin maksimal 31',
             'alpha.required' => 'Jumlah hari alpha tidak boleh kosong',
             'alpha.numeric' => 'Jumlah hari alpha harus berupa angka',
+            'alpha.min' => 'Jumlah hari alpha minimal 0',
+            'alpha.max' => 'Jumlah hari alpha maksimal 31',
         ]);
+
+        // Validasi tambahan: total hari tidak boleh lebih dari 31
+        $total_hari = $request->masuk + $request->izin + $request->alpha;
+        if ($total_hari > 31) {
+            return $this->setResponse(false, "Total hari masuk, izin, dan alpha tidak boleh lebih dari 31 hari");
+        }
 
         if ($validator->fails()) {
             $errors = [];
@@ -71,12 +84,33 @@ class AbsensiController extends Controller
             return $this->setResponse(false, "Validation Error", $errors);
         }
 
-        $request['bulan'] = $request['bulan'] . '-01';
-        Absensi::create($request->all());
+        // Cek duplikasi data (karyawan dan bulan yang sama)
+        $duplicate = Absensi::where('id_karyawan', $request->id_karyawan)
+            ->whereMonth('bulan', explode('-', $request->bulan)[1])
+            ->whereYear('bulan', explode('-', $request->bulan)[0])
+            ->first();
 
-        return $this->setResponse(true, "Sukses membuat absensi");
+        if ($duplicate) {
+            return $this->setResponse(false, "Data absensi untuk karyawan dan bulan yang sama sudah ada");
+        }
+
+        // Format bulan untuk database
+        $bulan_formatted = $request->bulan . '-01';
+
+        try {
+            Absensi::create([
+                'id_karyawan' => $request->id_karyawan,
+                'bulan' => $bulan_formatted,
+                'masuk' => $request->masuk,
+                'izin' => $request->izin,
+                'alpha' => $request->alpha,
+            ]);
+
+            return $this->setResponse(true, "Sukses membuat absensi");
+        } catch (\Exception $e) {
+            return $this->setResponse(false, "Terjadi kesalahan: " . $e->getMessage());
+        }
     }
-
     /**
      * Display the specified resource.
      */
@@ -103,24 +137,39 @@ class AbsensiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->removeUnused($request);
+        // Hapus parameter yang tidak diperlukan
+        $request->request->remove('_token');
+        $request->request->remove('_method');
 
         $validator = Validator::make($request->all(), [
             'id_karyawan' => 'required',
-            'bulan' => 'required',
-            'masuk' => 'required|numeric',
-            'izin' => 'required|numeric',
-            'alpha' => 'required|numeric',
+            'bulan' => 'required|date_format:Y-m',
+            'masuk' => 'required|numeric|min:0|max:31',
+            'izin' => 'required|numeric|min:0|max:31',
+            'alpha' => 'required|numeric|min:0|max:31',
         ], [
             'id_karyawan.required' => 'Karyawan tidak boleh kosong',
             'bulan.required' => 'Bulan tidak boleh kosong',
+            'bulan.date_format' => 'Format bulan tidak valid (YYYY-MM)',
             'masuk.required' => 'Jumlah hari masuk tidak boleh kosong',
             'masuk.numeric' => 'Jumlah hari masuk harus berupa angka',
+            'masuk.min' => 'Jumlah hari masuk minimal 0',
+            'masuk.max' => 'Jumlah hari masuk maksimal 31',
             'izin.required' => 'Jumlah hari izin tidak boleh kosong',
             'izin.numeric' => 'Jumlah hari izin harus berupa angka',
+            'izin.min' => 'Jumlah hari izin minimal 0',
+            'izin.max' => 'Jumlah hari izin maksimal 31',
             'alpha.required' => 'Jumlah hari alpha tidak boleh kosong',
             'alpha.numeric' => 'Jumlah hari alpha harus berupa angka',
+            'alpha.min' => 'Jumlah hari alpha minimal 0',
+            'alpha.max' => 'Jumlah hari alpha maksimal 31',
         ]);
+
+        // Validasi tambahan: total hari tidak boleh lebih dari 31
+        $total_hari = $request->masuk + $request->izin + $request->alpha;
+        if ($total_hari > 31) {
+            return $this->setResponse(false, "Total hari masuk, izin, dan alpha tidak boleh lebih dari 31 hari");
+        }
 
         if ($validator->fails()) {
             $errors = [];
@@ -130,10 +179,37 @@ class AbsensiController extends Controller
             return $this->setResponse(false, "Validation Error", $errors);
         }
 
-        $request['bulan'] = $request['bulan'] . '-01';
-        Absensi::where('id_absensi', $id)->update($request->all());
+        // Cek duplikasi data (karyawan dan bulan yang sama, kecuali data yang sedang diedit)
+        $duplicate = Absensi::where('id_karyawan', $request->id_karyawan)
+            ->whereMonth('bulan', explode('-', $request->bulan)[1])
+            ->whereYear('bulan', explode('-', $request->bulan)[0])
+            ->where('id_absensi', '!=', $id)
+            ->first();
 
-        return $this->setResponse(true, "Sukses update absensi");
+        if ($duplicate) {
+            return $this->setResponse(false, "Data absensi untuk karyawan dan bulan yang sama sudah ada");
+        }
+
+        // Format bulan untuk database
+        $bulan_formatted = $request->bulan . '-01';
+
+        try {
+            $updated = Absensi::where('id_absensi', $id)->update([
+                'id_karyawan' => $request->id_karyawan,
+                'bulan' => $bulan_formatted,
+                'masuk' => $request->masuk,
+                'izin' => $request->izin,
+                'alpha' => $request->alpha,
+            ]);
+
+            if ($updated) {
+                return $this->setResponse(true, "Sukses update absensi");
+            } else {
+                return $this->setResponse(false, "Gagal update absensi");
+            }
+        } catch (\Exception $e) {
+            return $this->setResponse(false, "Terjadi kesalahan: " . $e->getMessage());
+        }
     }
 
     /**

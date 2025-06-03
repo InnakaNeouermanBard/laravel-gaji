@@ -161,7 +161,7 @@
                     <td class="bold">1</td>
                     <td class="bold">GAJI POKOK</td>
                     <td class="bold">(+)</td>
-                    <td class="bold">@currency($gaji->gaji_pokok)</td>
+                    <td class="bold">@currency($gaji->gaji_awal)</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -173,7 +173,7 @@
                     <td class="bold">2</td>
                     <td class="bold">BONUS</td>
                     <td></td>
-                    <td></td>
+                    <td>@currency($gaji->total_bonus)</td>
                 </tr>
                 <tr>
                     <td>a)</td>

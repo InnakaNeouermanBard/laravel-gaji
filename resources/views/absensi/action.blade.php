@@ -1,11 +1,11 @@
-{{-- action.blade  --}}
 <?php
+// FILE 1: action.blade.php (Fixed)
 $is_edit = isset($data);
 ?>
 
 <form id="main-form" class="form-horizontal"
-    action="{{ $is_edit ? route('absensi.update', $data) : route('absensi.store') }}" role="form" method="POST"
-    autocomplete="off" data-reload="true">
+    action="{{ $is_edit ? route('absensi.update', $data->id_absensi) : route('absensi.store') }}" role="form"
+    method="POST" autocomplete="off" data-reload="true">
     @csrf
     {!! $is_edit ? method_field('PUT') : '' !!}
     <div id="modal-master" class="modal-dialog" role="document">
@@ -34,18 +34,18 @@ $is_edit = isset($data);
                     </div>
                     <div class="form-group required">
                         <label for="masuk">Masuk</label>
-                        <input type="text" class="form-control" id="masuk" name="masuk"
-                            value="{{ isset($data->masuk) ? $data->masuk : '' }}" required>
+                        <input type="number" class="form-control" id="masuk" name="masuk" min="0"
+                            max="31" value="{{ isset($data->masuk) ? $data->masuk : '' }}" required>
                     </div>
                     <div class="form-group required">
                         <label for="izin">Izin</label>
-                        <input type="text" class="form-control" id="izin" name="izin"
-                            value="{{ isset($data->izin) ? $data->izin : '' }}" required>
+                        <input type="number" class="form-control" id="izin" name="izin" min="0"
+                            max="31" value="{{ isset($data->izin) ? $data->izin : '' }}" required>
                     </div>
                     <div class="form-group required">
                         <label for="alpha">Alpha</label>
-                        <input type="text" class="form-control" id="alpha" name="alpha"
-                            value="{{ isset($data->alpha) ? $data->alpha : '' }}" required>
+                        <input type="number" class="form-control" id="alpha" name="alpha" min="0"
+                            max="31" value="{{ isset($data->alpha) ? $data->alpha : '' }}" required>
                     </div>
                 </div>
             </div>
@@ -57,3 +57,44 @@ $is_edit = isset($data);
         </div>
     </div>
 </form>
+
+<script>
+    $(document).ready(function() {
+        // Validasi form sebelum submit
+        $('#main-form').on('submit', function(e) {
+            let masuk = parseInt($('#masuk').val()) || 0;
+            let izin = parseInt($('#izin').val()) || 0;
+            let alpha = parseInt($('#alpha').val()) || 0;
+            let total = masuk + izin + alpha;
+
+            // Validasi total hari tidak lebih dari 31
+            if (total > 31) {
+                e.preventDefault();
+                toastr.error('Total hari masuk, izin, dan alpha tidak boleh lebih dari 31 hari');
+                return false;
+            }
+
+            // Validasi karyawan dan bulan yang sama
+            if (!$('#id_karyawan').val() || !$('#bulan').val()) {
+                e.preventDefault();
+                toastr.error('Karyawan dan bulan harus dipilih');
+                return false;
+            }
+        });
+
+        // Auto calculate sisa hari
+        $('#masuk, #izin, #alpha').on('input', function() {
+            let masuk = parseInt($('#masuk').val()) || 0;
+            let izin = parseInt($('#izin').val()) || 0;
+            let alpha = parseInt($('#alpha').val()) || 0;
+            let total = masuk + izin + alpha;
+
+            if (total > 31) {
+                $(this).addClass('is-invalid');
+                toastr.warning('Total hari tidak boleh lebih dari 31');
+            } else {
+                $('#masuk, #izin, #alpha').removeClass('is-invalid');
+            }
+        });
+    });
+</script>
