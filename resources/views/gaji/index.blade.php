@@ -155,7 +155,7 @@
                                                                     method="POST" class="ms-1 acc-form">
                                                                     @csrf
                                                                     @method('PUT')
-                                                                    <button class="acc-text btn btn-sm btn-success">
+                                                                    <button class="acc-text btn btn-sm btn-info">
                                                                         <i class="fa fa-check"></i>
                                                                     </button>
                                                                 </form>
@@ -197,7 +197,7 @@
                                                                     action="{{ route('gaji.kirimEmail', $gaji->id_gaji) }}"
                                                                     method="POST" class="d-inline">
                                                                     @csrf
-                                                                    <button class="btn btn-primary" type="submit">Kirim
+                                                                    <button class="btn btn-info btn-sm" type="submit">Kirim
                                                                         Email</button>
                                                                 </form>
                                                                 <form data-reload="true" id="main-form-delete"

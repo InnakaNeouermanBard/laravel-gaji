@@ -1,5 +1,5 @@
 <?php
-
+// welcomeMail.php 
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -9,21 +9,24 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 use App\Models\Karyawan;
 use App\Models\Gaji;
+use App\Models\Jabatan;
 
 class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $gaji;
+    public $jabatan;
 
     /**
      * Create a new message instance.
      *
      * @param Gaji $gaji
      */
-    public function __construct(Gaji $gaji)
+    public function __construct(Gaji $gaji, Jabatan $jabatan)
     {
         $this->gaji = $gaji;
+        $this->jabatan = $jabatan;
     }
 
 

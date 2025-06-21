@@ -95,6 +95,9 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::get('slip-gaji', [LaporanSlipGaji::class, 'index'])->name('slip.gaji');
     Route::post('slip-gaji', [LaporanSlipGaji::class, 'print'])->name('slip.gaji.print');
 
+    Route::get('/slip-gaji/download/{gajiId}', [LaporanSlipGaji::class, 'downloadSlipIndividual'])
+        ->name('slip.download.individual');
+
     // Route::get('/mail', function () {
     //     $name = 'Test Gaji';
 

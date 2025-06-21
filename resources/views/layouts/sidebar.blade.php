@@ -164,7 +164,7 @@
                 cancelButtonText: 'Batal',
                 reverseButtons: true,
                 customClass: {
-                    confirmButton: 'btn btn-primary me-2',
+                    confirmButton: 'btn btn-outline-danger',
                     cancelButton: 'btn btn-outline-secondary'
                 },
                 buttonsStyling: false

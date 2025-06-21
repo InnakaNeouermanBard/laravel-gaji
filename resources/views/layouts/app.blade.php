@@ -17,9 +17,10 @@
     <!-- Style -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/skin_color.css') }}" />
-    {{-- <link rel="stylesheet" href="{{ asset('css/sweetalert2.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
+
     <style>
+        /* Custom White Theme Styles */
         .template {
             position: 'absolute';
             height: 0px;
@@ -47,24 +48,193 @@
             margin-left: 3px;
         }
 
-        /* Hide asterisk for non-required fields */
-
         #main-table .dataTables_filter input {
             background-color: red !important;
         }
 
-        .dark-mode .swal2-popup {
-            background-color: #112547;
-            color: #e9ecef;
+        /* White Theme Overrides */
+        body {
+            background-color: #f8f9fa !important;
+        }
+
+        .main-sidebar {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
+            border-right: 1px solid #e9ecef !important;
+        }
+
+        .sidebar-menu .nav-item a,
+        .sidebar-menu .treeview>a {
+            color: #495057 !important;
+            background-color: transparent !important;
+            border-radius: 8px !important;
+            margin: 0 15px !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+        }
+
+        .sidebar-menu .nav-item a:hover,
+        .sidebar-menu .treeview>a:hover {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+            transform: translateX(5px) !important;
+        }
+
+        .sidebar-menu .nav-item.active a,
+        .sidebar-menu .treeview.active>a {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f3f4 100%) !important;
+            color: #212529 !important;
+            border-left: 4px solid #6c757d !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .sidebar-menu .svg-icon {
+            filter: brightness(0.4) !important;
+        }
+
+        .sidebar-menu .nav-item.active .svg-icon {
+            filter: brightness(0.2) !important;
+        }
+
+        .sidebar-menu .pull-right-container .fa-angle-right {
+            color: #6c757d !important;
+            transition: transform 0.3s ease !important;
+        }
+
+        .sidebar-menu .treeview.active .fa-angle-right {
+            transform: rotate(90deg) !important;
+        }
+
+        .sidebar-menu .treeview-menu {
+            background-color: #f8f9fa !important;
+            border-radius: 8px !important;
+            margin: 5px 15px 0 15px !important;
+        }
+
+        .sidebar-menu .treeview-menu a {
+            color: #6c757d !important;
+            border-radius: 6px !important;
+            margin: 0 10px !important;
+            transition: all 0.3s ease !important;
+            font-size: 14px !important;
+        }
+
+        .sidebar-menu .treeview-menu a:hover {
+            background-color: #ffffff !important;
+            color: #495057 !important;
+            transform: translateX(3px) !important;
+        }
+
+        .sidebar-menu .treeview-menu li.active a {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+            border-left: 3px solid #6c757d !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .sidebar-menu .treeview-menu .ti-more {
+            margin-right: 8px !important;
+            color: #6c757d !important;
+        }
+
+        .content-wrapper {
+            background-color: #f8f9fa !important;
+        }
+
+        .main-footer {
+            background-color: #ffffff !important;
+            border-top: 1px solid #e9ecef !important;
+            color: #6c757d !important;
+        }
+
+        /* Custom SweetAlert2 White Theme */
+        .swal2-popup {
+            background-color: #ffffff !important;
+            color: #495057 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .swal2-title {
+            color: #212529 !important;
         }
 
         .swal2-content {
-            color: #e9ecef !important;
+            color: #495057 !important;
+        }
+
+        .swal2-confirm {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+            border: 2px solid #6c757d !important;
+            color: #495057 !important;
+        }
+
+        .swal2-confirm:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+            border-color: #495057 !important;
+            color: #212529 !important;
+        }
+
+        .swal2-cancel {
+            border: 2px solid #6c757d !important;
+            color: #6c757d !important;
+        }
+
+        .swal2-cancel:hover {
+            background-color: #6c757d !important;
+            color: #ffffff !important;
+        }
+
+        /* Button overrides for white theme */
+        .btn-primary {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+            border: 2px solid #6c757d !important;
+            color: #495057 !important;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+            border-color: #495057 !important;
+            color: #212529 !important;
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid #6c757d !important;
+            color: #6c757d !important;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d !important;
+            color: #ffffff !important;
+        }
+
+        /* Ubah warna teks input menjadi hitam */
+        .dataTables_filter input[type="search"] {
+            color: #000000 !important;
+            /* Teks hitam */
+            background-color: #ffffff !important;
+            /* Background putih */
+            border: 2px solid #cccccc !important;
+            border-radius: 8px !important;
+            padding: 10px 15px !important;
+        }
+
+        .dataTables_filter input[type="search"]:focus {
+            border-color: #007bff !important;
+            outline: none !important;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3) !important;
+        }
+
+        /* Placeholder tetap abu-abu */
+        .dataTables_filter input[type="search"]::placeholder {
+            color: #666666 !important;
+            opacity: 1 !important;
         }
     </style>
 </head>
 
-<body class="hold-transition dark-skin dark-mode sidebar-mini theme-primary fixed">
+<body class="hold-transition light-skin sidebar-mini theme-primary fixed">
     <div class="wrapper">
         @include('layouts.navbar')
         <!-- comment -->
@@ -114,14 +284,15 @@
             $("#main_table").DataTable({
                 "lengthChange": false,
                 "autoWidth": true,
-            })
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
+                // Tambahkan kelas Bootstrap
+                "dom": '<"row"<"col-sm-6"l><"col-sm-6"f>>' +
+                    '<"row"<"col-sm-12"tr>>' +
+                    '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+                "pagingType": "full_numbers",
+                "language": {
+                    "search": "Cari :",
+                    "searchPlaceholder": "Cari data...",
+                }
             });
         });
     </script>
@@ -215,11 +386,6 @@
             btn.html('Simpan');
         }
 
-        //#GetIconPicker on click
-        // $(document).on('click', '#GetIconPicker', function(e) {
-        //     // alert('ok')
-        // })
-
         $(document).on('submit', '#main-form-file', function(e) {
             e.preventDefault();
             var form = $(this);
@@ -310,12 +476,12 @@
                 text: 'Apakah yakin untuk menghapus data ini?',
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#6c757d",
                 cancelButtonColor: "#d33",
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak',
                 confirmButtonClass: "btn btn-primary",
-                cancelButtonClass: "btn btn-danger ml-1",
+                cancelButtonClass: "btn btn-outline-secondary ml-1",
                 buttonsStyling: !1,
                 allowOutsideClick: false,
             }).then(function(t) {
@@ -334,12 +500,12 @@
                 text: 'Apakah yakin untuk approve gaji ini?',
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#6c757d",
                 cancelButtonColor: "#d33",
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak',
                 confirmButtonClass: "btn btn-primary",
-                cancelButtonClass: "btn btn-danger ml-1",
+                cancelButtonClass: "btn btn-outline-secondary ml-1",
                 buttonsStyling: !1,
                 allowOutsideClick: false,
             }).then(function(t) {
@@ -358,12 +524,12 @@
                 text: 'Apakah yakin untuk menolak gaji ini?',
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#6c757d",
                 cancelButtonColor: "#d33",
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak',
                 confirmButtonClass: "btn btn-primary",
-                cancelButtonClass: "btn btn-danger ml-1",
+                cancelButtonClass: "btn btn-outline-secondary ml-1",
                 buttonsStyling: !1,
                 allowOutsideClick: false,
             }).then(function(t) {
@@ -382,12 +548,12 @@
                 text: 'Apakah yakin untuk membatalkan gaji ini?',
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#6c757d",
                 cancelButtonColor: "#d33",
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak',
                 confirmButtonClass: "btn btn-primary",
-                cancelButtonClass: "btn btn-danger ml-1",
+                cancelButtonClass: "btn btn-outline-secondary ml-1",
                 buttonsStyling: !1,
                 allowOutsideClick: false,
             }).then(function(t) {
@@ -548,14 +714,14 @@
                 title: 'Konfirmasi Hapus',
                 text: 'Apakah yakin untuk menghapus data ini?',
                 type: "warning",
-                color: '#ffffff',
+                color: '#495057',
                 showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#6c757d",
                 cancelButtonColor: "#d33",
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak',
                 confirmButtonClass: "btn btn-sm btn-primary",
-                cancelButtonClass: "btn btn-sm btn-danger ms-1",
+                cancelButtonClass: "btn btn-sm btn-outline-secondary ms-1",
                 buttonsStyling: !1,
                 allowOutsideClick: false,
             }).then(function(t) {
@@ -574,12 +740,12 @@
                 text: 'Apakah yakin untuk approve gaji ini?',
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#6c757d",
                 cancelButtonColor: "#d33",
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak',
-                confirmButtonClass: "btn btn-primary",
-                cancelButtonClass: "btn btn-danger ms-1",
+                confirmButtonClass: "btn btn-success-sm",
+                cancelButtonClass: "btn btn-outline-secondary ms-1",
                 buttonsStyling: !1,
                 allowOutsideClick: false,
             }).then(function(t) {
@@ -598,12 +764,12 @@
                 text: 'Apakah yakin untuk menolak gaji ini?',
                 type: "warning",
                 showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#6c757d",
                 cancelButtonColor: "#d33",
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak',
                 confirmButtonClass: "btn btn-primary",
-                cancelButtonClass: "btn btn-danger ms-1",
+                cancelButtonClass: "btn btn-outline-secondary ms-1",
                 buttonsStyling: !1,
                 allowOutsideClick: false,
             }).then(function(t) {

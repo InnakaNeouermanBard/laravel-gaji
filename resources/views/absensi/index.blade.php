@@ -211,7 +211,7 @@
                     <div class="datatables-card shadow">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center gap-5">
-                                <h5 class="m-0 font-weight-bold text-primary gap-2">Data Absensi Karyawan </h5>
+                                <h5 class="m-0 font-weight-bold text-primary gap-2">Data Absensi Pegawai </h5>
                                 <div>
                                     <a href="#" class="btn btn-sm btn-success btn-modern me-1" id="btn-export"
                                         onclick="event.preventDefault(); document.getElementById('export-form').submit();">

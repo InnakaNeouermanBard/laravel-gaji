@@ -10,9 +10,11 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class AbsensiExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize, WithTitle
+class AbsensiExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize, WithTitle, WithEvents
 {
     protected $bulan;
     protected $tahun;
@@ -99,45 +101,82 @@ class AbsensiExport implements FromCollection, WithHeadings, WithMapping, WithSt
      */
     public function styles(Worksheet $sheet)
     {
-        $periode = $this->bulan && $this->tahun ?
-            Carbon::createFromDate($this->tahun, $this->bulan, 1)->locale('id')->isoFormat('MMMM Y') :
-            'Semua Periode';
-
-        $sheet->mergeCells('A1:I1');
-        $sheet->setCellValue('A1', 'DATA ABSENSI KARYAWAN PERIODE ' . strtoupper($periode));
-        $sheet->getStyle('A1')->getFont()->setBold(true);
-        $sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        // Style untuk heading
-        $sheet->getStyle('A2:I2')->applyFromArray([
-            'font' => [
-                'bold' => true,
-            ],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => [
-                    'rgb' => '4472C4',
-                ],
-            ],
-            'font' => [
-                'color' => [
-                    'rgb' => 'FFFFFF',
-                ],
-            ],
-        ]);
-
-        // Border untuk semua data
-        $lastRow = $sheet->getHighestRow();
-        $sheet->getStyle('A2:I' . $lastRow)->applyFromArray([
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                ],
-            ],
-        ]);
-
+        // Style untuk heading (baris 1)
         return [
-            2 => ['font' => ['bold' => true]],
+            1 => [
+                'font' => ['bold' => true],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => '4472C4'],
+                ],
+                'font' => [
+                    'color' => ['rgb' => 'FFFFFF'],
+                    'bold' => true,
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $sheet = $event->sheet->getDelegate();
+
+                // Mendapatkan periode untuk judul
+                $periode = $this->bulan && $this->tahun ?
+                    Carbon::createFromDate($this->tahun, $this->bulan, 1)->locale('id')->isoFormat('MMMM Y') :
+                    'Semua Periode';
+
+                // Insert row baru di atas untuk judul
+                $sheet->insertNewRowBefore(1, 1);
+
+                // Set judul di baris pertama
+                $sheet->mergeCells('A1:I1');
+                $sheet->setCellValue('A1', 'DATA ABSENSI PEGAWAI PERIODE ' . strtoupper($periode));
+
+                // Style untuk judul
+                $sheet->getStyle('A1')->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                        'size' => 14,
+                    ],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    ],
+                ]);
+
+                // Style untuk heading (sekarang di baris 2)
+                $sheet->getStyle('A2:I2')->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                        'color' => ['rgb' => 'FFFFFF'],
+                    ],
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'startColor' => ['rgb' => '4472C4'],
+                    ],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    ],
+                ]);
+
+                // Border untuk semua data
+                $lastRow = $sheet->getHighestRow();
+                $sheet->getStyle('A2:I' . $lastRow)->applyFromArray([
+                    'borders' => [
+                        'allBorders' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        ],
+                    ],
+                ]);
+            },
         ];
     }
 }

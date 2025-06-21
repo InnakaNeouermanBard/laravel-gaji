@@ -78,11 +78,23 @@ $is_edit = isset($data);
                             </select>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
+                    {{-- <div class="col-12 col-md-6">
                         <div class="form-group required">
                             <label for="status_perkawinan">Status Perkawinan</label>
                             <input type="text" class="form-control" id="status_perkawinan" name="status_perkawinan"
                                 value="{{ isset($data->status_perkawinan) ? $data->status_perkawinan : '' }}" required>
+                        </div>
+                    </div> --}}
+                    <div class="col-12 col-md-6">
+                        <div class="form-group required">
+                            <label for="status_perkawinan">Status Perkawinan</label>
+                            <select class="form-select form-control" id="status_perkawinan" name="status_perkawinan">
+                                <option value="" selected disabled>Pilih Status</option>
+                                <option value="Sudah" @if (isset($data->status_perkawinan) && $data->status_perkawinan == 'Sudah') selected @endif>Sudah
+                                </option>
+                                <option value="Belum" @if (isset($data->status_perkawinan) && $data->status_perkawinan == 'Belum') selected @endif>
+                                    Belum</option>
+                            </select>
                         </div>
                     </div>
 

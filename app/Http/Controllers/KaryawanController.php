@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gaji;
+use App\Models\User;
 use App\Models\Absensi;
 use App\Models\Jabatan;
 use App\Models\Karyawan;
-use App\Models\User;
+use App\Models\Lembur;
+use App\Models\PotonganGaji;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
@@ -114,7 +117,7 @@ class KaryawanController extends Controller
 
         ]);
 
-        return $this->setResponse(true, "Sukses membuat karyawan");
+        return $this->setResponse(true, "Sukses membuat pegawai baru");
     }
 
     /**
@@ -208,7 +211,7 @@ class KaryawanController extends Controller
             'email' => $request->email,
         ]);
 
-        return $this->setResponse(true, "Sukses update karyawan");
+        return $this->setResponse(true, "Sukses update Pegawai");
     }
 
     /**
@@ -223,27 +226,41 @@ class KaryawanController extends Controller
             // Cari data karyawan
             $karyawan = Karyawan::findOrFail($id);
 
+            // Simpan id_user untuk hapus user nanti
+            $userId = $karyawan->id_user;
+
+            // STEP 1: Hapus data yang terkait dengan karyawan terlebih dahulu
             // Hapus semua data absensi yang terkait dengan karyawan ini
             Absensi::where('id_karyawan', $id)->delete();
 
-            // Cari data user yang terkait
-            $user = User::findOrFail($karyawan->id_user);
+            // Hapus semua data lembur yang terkait dengan karyawan ini  
+            Lembur::where('id_karyawan', $id)->delete();
 
-            // Hapus data karyawan
+            PotonganGaji::where('id_karyawan', $id)->delete();
+
+            // Hapus semua data gaji yang terkait dengan karyawan ini
+            Gaji::where('id_karyawan', $id)->delete();
+
+            // STEP 2: Hapus data karyawan (ini akan melepas foreign key constraint)
             $karyawan->delete();
 
-            // Hapus data user
-            $user->delete();
+            // STEP 3: Baru hapus data user (setelah karyawan dihapus)
+            if ($userId) {
+                $user = User::find($userId);
+                if ($user) {
+                    $user->delete();
+                }
+            }
 
             // Commit transaction jika semua berhasil
             DB::commit();
 
-            return $this->setResponse(true, "Sukses hapus karyawan beserta data absensinya");
+            return $this->setResponse(true, "Sukses hapus pegawai");
         } catch (\Exception $e) {
             // Rollback transaction jika terjadi error
             DB::rollback();
 
-            return $this->setResponse(false, "Gagal hapus karyawan: " . $e->getMessage());
+            return $this->setResponse(false, "Gagal hapus pegawai: " . $e->getMessage());
         }
     }
 }

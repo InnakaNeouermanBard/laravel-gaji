@@ -36,7 +36,7 @@
                             </h4>
                             <div class="box-tools">
                                 @if (auth()->user()->level == 0)
-                                    <a href="#" class="btn btn-sm btn-primary mt-1 ajax_modal"
+                                    <a href="#" class="btn mt-1 ajax_modal"
                                         data-url="{{ route('karyawan.create') }}"><i class="fa fa-plus"></i>
                                         Tambah</a>
                                 @endif
@@ -46,6 +46,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="table-responsives">
+
                             <table class="table table-striped table-hover table-full-width" id="main_table">
                                 <thead>
                                     <tr>

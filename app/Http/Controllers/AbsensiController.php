@@ -91,7 +91,7 @@ class AbsensiController extends Controller
             ->first();
 
         if ($duplicate) {
-            return $this->setResponse(false, "Data absensi untuk karyawan dan bulan yang sama sudah ada");
+            return $this->setResponse(false, "Data absensi untuk pegawai dan bulan yang sama sudah ada");
         }
 
         // Format bulan untuk database
@@ -187,7 +187,7 @@ class AbsensiController extends Controller
             ->first();
 
         if ($duplicate) {
-            return $this->setResponse(false, "Data absensi untuk karyawan dan bulan yang sama sudah ada");
+            return $this->setResponse(false, "Data absensi untuk pegawai dan bulan yang sama sudah ada");
         }
 
         // Format bulan untuk database

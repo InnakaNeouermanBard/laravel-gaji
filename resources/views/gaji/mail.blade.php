@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+{{-- mail.blade.php  --}}
 
 <head>
     <meta charset="UTF-8">
@@ -82,7 +83,9 @@
         <table>
             <tr>
                 <th>Gaji Pokok</th>
-                <td>Rp {{ number_format($gaji->gaji_pokok, 0, ',', '.') }}</td>
+                <td>Rp
+                    {{ number_format($gaji->gaji_pokok - $gaji->total_lembur * $jabatan->uang_lembur, 0, ',', '.') }}
+                </td>
             </tr>
             <tr>
                 <th>Potongan Gaji</th>
@@ -90,7 +93,7 @@
             </tr>
             <tr>
                 <th>Total Lembur</th>
-                <td>Rp {{ number_format($gaji->total_lembur, 0, ',', '.') }}</td>
+                <td>Rp {{ number_format($gaji->total_lembur * $jabatan->uang_lembur, 0, ',', '.') }}</td>
             </tr>
             <tr>
                 <th>Total Bonus</th>
@@ -107,7 +110,6 @@
         <p>Terima kasih telah bekerja dengan kami. Jika Anda memiliki pertanyaan lebih lanjut, jangan ragu untuk
             menghubungi kami.</p>
 
-        <a href="#" class="button">Lihat Rincian Pembayaran</a>
 
         <div class="footer">
             <p>Salam,<br> Tim Penggajian</p>

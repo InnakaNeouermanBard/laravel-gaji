@@ -7,6 +7,7 @@ use App\Models\Gaji;
 use App\Models\Karyawan;
 use App\Mail\GajiBayarMail;
 use App\Mail\WelcomeMail;
+use App\Models\Jabatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -225,13 +226,14 @@ class GajiController extends Controller
 
         // Ambil data karyawan terkait
         $karyawan = Karyawan::find($gaji->id_karyawan);
+        $jabatan = Jabatan::find($karyawan->id_jabatan);
 
         // Update status gaji menjadi 'dibayar' (status 1)
         $gaji->status = 3; // 1 berarti dibayar
         $gaji->save();
 
         // Kirim email menggunakan mailable
-        Mail::to($karyawan->email)->send(new WelcomeMail($gaji));
+        Mail::to($karyawan->email)->send(new WelcomeMail($gaji, $jabatan));
 
         return redirect()->route('gaji.index')->with('success', 'Gaji telah dibayar dan email berhasil dikirim');
     }
